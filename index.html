@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Obfuscator - Thanh Dieu</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; line-height: 1.6; }
+        textarea { width: 100%; height: 200px; margin-bottom: 10px; border: 1px solid #ccc; padding: 10px; }
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #f4f4f4; padding: 15px; border-radius: 8px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        #output { background: #222; color: #0f0; padding: 15px; overflow-x: auto; white-space: pre-wrap; border-radius: 5px; margin-top: 20px; min-height: 100px; }
+    </style>
+</head>
+<body>
+    <h2>Công cụ mã hoá JavaScript - ThanhDieu</h2>
+    
+    <textarea id="code" placeholder="Dán code JavaScript của bạn vào đây..."></textarea>
+
+    <div class="options">
+        <div>
+            <label>Mức độ (Preset):</label>
+            <select id="preset">
+                <option value="low">Thấp (Low)</option>
+                <option value="medium">Trung bình (Medium)</option>
+                <option value="high">Cao (High)</option>
+            </select>
+        </div>
+        <div><input type="checkbox" id="renameVariables" checked> <label>Đổi tên biến (Rename Variables)</label></div>
+        <div><input type="checkbox" id="selfDefending" checked> <label>Tự bảo vệ (Self Defending)</label></div>
+        <div><input type="checkbox" id="antiDebug" checked> <label>Chống Debug (Anti Debug)</label></div>
+        <div><input type="checkbox" id="stringEncoding" checked> <label>Mã hóa chuỗi (String Encoding)</label></div>
+    </div>
+
+    <button onclick="obfuscate()">Mã hóa ngay</button>
+
+    <h3>Kết quả:</h3>
+    <div id="output">Code đã mã hóa sẽ hiện ở đây...</div>
+
+    <script>
+        async function obfuscate() {
+            const code = document.getElementById('code').value;
+            if(!code.trim()) return alert("Vui lòng nhập code!");
+
+            const payload = {
+                code: code,
+                preset: document.getElementById('preset').value,
+                renameVariables: document.getElementById('renameVariables').checked,
+                selfDefending: document.getElementById('selfDefending').checked,
+                antiDebug: document.getElementById('antiDebug').checked,
+                stringEncoding: document.getElementById('stringEncoding').checked,
+                target: "browser"
+            };
+
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerText = "Đang xử lý...";
+
+            try {
+                const response = await fetch('/javascript/obfuscate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.text();
+                outputDiv.innerText = result;
+            } catch (err) {
+                outputDiv.innerText = "Lỗi: " + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
