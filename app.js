@@ -54,7 +54,7 @@ app.post('/javascript/obfuscate', (req, res) => {
     const endTime = Date.now();
     const executionTime = ((endTime - startTime) / 1000).toFixed(1);
     const author = `/**
-* HOANGNGHIA.FWH.IS Online Obfuscation Javascript :)
+* hoangnghia.fwh.is Online Obfuscation Javascript :)
 * Obfuscate At: ${new Date().toLocaleTimeString()} ${new Date().toLocaleDateString()}
 * Preset: ${preset}
 * Execution time: ${executionTime}s
